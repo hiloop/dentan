@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import Top from './views/Top.vue';
 
 Vue.use(Router);
 
@@ -10,6 +11,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'top',
+      component: Top,
+    },
+    {
+      path: '/home',
       name: 'home',
       component: Home,
     },
