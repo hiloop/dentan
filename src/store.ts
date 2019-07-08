@@ -48,7 +48,8 @@ export default new Vuex.Store({
   },
   mutations: {
     changeStatus: (state, target) => {
-      state.kanmusu.filter((e) => e.id === target.id)[0].status = target.status;
+      const status: number = parseInt(target.status, 0);
+      state.kanmusu.filter((e) => e.id === target.id)[0].status = status;
     },
   },
   actions: {},

@@ -3,15 +3,9 @@
         <Tab :isActive="unExistTab" :selectStatus="unExists" @clicked="changeTab">未所属</Tab>
         <Tab :isActive="unRemodeledTab" :selectStatus="unRemodeled" @clicked="changeTab">未改造</Tab>
         <Tab :isActive="doneTab" :selectStatus="done" @clicked="changeTab">完了</Tab>
-        <div>
-            <Workspace :isVisible="unExistTab" :selectStatus="unExists">Tab1</Workspace>
-        </div>
-        <div>
-            <Workspace :isVisible="unRemodeledTab" :selectStatus="unRemodeled" >Tab2</Workspace>
-        </div>
-        <div>
-            <Workspace :isVisible="doneTab" :selectStatus="done">Tab3</Workspace>
-        </div>
+        <Workspace v-if="selected === unExists" :selectStatus="unExists" key="unExists">Tab1</Workspace>
+        <Workspace v-else-if="selected === unRemodeled" :selectStatus="unRemodeled" key="unRemodeled">Tab2</Workspace>
+        <Workspace v-else :selectStatus="done" key="done">Tab3</Workspace>
     </div>
 </template>
 

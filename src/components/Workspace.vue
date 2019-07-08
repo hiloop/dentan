@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="isVisible" class="main">
+        <div class="main">
             <slot></slot>
             <div v-for="(kanmusu, index) in allKanmusu" :key="index">
                 <Card :selectId="kanmusu.id"></Card>
@@ -26,9 +26,6 @@ export default class Workspace extends Vue {
 
     @Prop()
     private id!: string;
-
-    @Prop()
-    private isVisible?: boolean;
 
     private allKanmusu?: object[];
 
