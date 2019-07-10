@@ -1,14 +1,14 @@
 <template>
     <div class="card">
-        <div>
+        <div class="contents">
             <div>{{ name }}</div>
             <div>Lv. {{ level }}</div>
         </div>
-        <div>改装設計図 {{ sekkeizu }}枚</div>
-        <div>試製甲板カタパルト {{ catapult }}個</div>
-        <div>戦闘詳報 {{ sentoushouhou }}枚</div>
-        <div>開発資材 {{ kaihatsusizai }}個</div>
-        <div>新型航空兵装資材 {{ koukusizai }}個</div>
+        <CardLabel :leftText="'改装設計図'" :quantity="sekkeizu" :unit="'枚'"></CardLabel>
+        <CardLabel :leftText="'試製甲板カタパルト'" :quantity="catapult" :unit="'枚'"></CardLabel>
+        <CardLabel :leftText="'戦闘詳報'" :quantity="sentoushouhou" :unit="'枚'"></CardLabel>
+        <CardLabel :leftText="'新型航空兵装資材'" :quantity="koukusizai" :unit="'個'"></CardLabel>
+        <CardLabel :leftText="'開発資材'" :quantity="kaihatsusizai" :unit="'個'"></CardLabel>
         <label>
             <input :name="selectId" type="radio" value="0" v-model="status" v-on:change="changeStatus"/>
             未所属
@@ -26,8 +26,13 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+import CardLabel from '@/components/CardLabel.vue';
 
-@Component
+@Component({
+    components: {
+        CardLabel,
+    },
+})
 export default class Card extends Vue {
     @Prop()
     public selectId!: number;
@@ -38,8 +43,8 @@ export default class Card extends Vue {
     private sekkeizu?: number;
     private catapult?: number;
     private sentoushouhou?: number;
-    private kaihatsusizai?: number;
     private koukusizai?: number;
+    private kaihatsusizai?: number;
     private status?: number;
     /**
      * 初期処理
@@ -72,5 +77,8 @@ export default class Card extends Vue {
     background-color: #3e92a3;
     height: 300px;
     width: 220px;
+}
+.contents {
+    // margin-top: -10px;
 }
 </style>

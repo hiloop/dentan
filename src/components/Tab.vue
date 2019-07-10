@@ -25,6 +25,7 @@ export default class Tab extends Vue {
 
 <style scoped lang="scss">
 .tab {
+    text-align: center;
     width: 60px;
     border-bottom: 30px solid #3e92a3;
     border-left: 20px solid transparent;

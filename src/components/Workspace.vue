@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <div class="main">
-            <slot></slot>
-            <div v-for="(kanmusu, index) in allKanmusu" :key="index">
-                <Card :selectId="kanmusu.id"></Card>
-            </div>
+    <div class="main">
+        <slot></slot>
+        <div v-for="(kanmusu, index) in allKanmusu" :key="index">
+            <Card :selectId="kanmusu.id"></Card>
         </div>
     </div>
 </template>
@@ -30,14 +28,15 @@ export default class Workspace extends Vue {
     private allKanmusu?: object[];
 
     private created() {
-        this.allKanmusu = this.$store.getters.getKanmusuByStatus(this.selectStatus);
+        this.allKanmusu = this.$store.getters.getKanmusuByStatus(
+            this.selectStatus
+        );
     }
 }
 </script>
 <style scoped lang="scss">
 .main {
     background-color: #ccc;
-    height: 600px;
-    width: 500%;
+    min-height: 800px;
 }
 </style>

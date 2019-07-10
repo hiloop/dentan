@@ -20,9 +20,7 @@ export default class DentanHeader extends Vue {
 
 <style scoped lang="scss">
 #dheader {
-    margin-top: -1%;
-    margin-left: -1%;
-    margin-right: -1%;
+    margin: 0px;
     height: 5em;
     background-color: #353940;
 }

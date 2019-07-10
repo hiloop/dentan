@@ -1,11 +1,15 @@
 <template>
-    <div>
-        <Tab :isActive="unExistTab" :selectStatus="unExists" @clicked="changeTab">未所属</Tab>
-        <Tab :isActive="unRemodeledTab" :selectStatus="unRemodeled" @clicked="changeTab">未改造</Tab>
-        <Tab :isActive="doneTab" :selectStatus="done" @clicked="changeTab">完了</Tab>
-        <Workspace v-if="selected === unExists" :selectStatus="unExists" key="unExists">Tab1</Workspace>
-        <Workspace v-else-if="selected === unRemodeled" :selectStatus="unRemodeled" key="unRemodeled">Tab2</Workspace>
-        <Workspace v-else :selectStatus="done" key="done">Tab3</Workspace>
+    <div class="main-container">
+        <div>
+            <Tab :isActive="unExistTab" :selectStatus="unExists" @clicked="changeTab">未所属</Tab>
+            <Tab :isActive="unRemodeledTab" :selectStatus="unRemodeled" @clicked="changeTab">未改造</Tab>
+            <Tab :isActive="doneTab" :selectStatus="done" @clicked="changeTab">完了</Tab>
+        </div>
+        <div>
+            <Workspace v-if="selected === unExists" :selectStatus="unExists" key="unExists">Tab1</Workspace>
+            <Workspace v-else-if="selected === unRemodeled" :selectStatus="unRemodeled" key="unRemodeled">Tab2</Workspace>
+            <Workspace v-else :selectStatus="done" key="done">Tab3</Workspace>
+        </div>
     </div>
 </template>
 
@@ -62,4 +66,9 @@ export default class MainContainer extends Vue {
 </script>
 
 <style scoped lang="scss">
+.main-container {
+    margin-top: 1%;
+    margin-left: 3%;
+    margin-right: 3%;
+}
 </style>
