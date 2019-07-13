@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Kanmusu from '@/store/kanmusu';
 
 Vue.use(Vuex);
 
@@ -22,11 +23,47 @@ export default new Vuex.Store({
         sentoushouhou : 0,
         kaihatsusizai : 0,
         koukusizai : 0,
-        status : 1,
+        status : 0,
       },
       {
         id : '404',
         name : '赤城改二',
+        phonetic : 'あかぎかいに',
+        level: 90,
+        sekkeizu : 2,
+        catapult : 1,
+        sentoushouhou : 1,
+        kaihatsusizai : 100,
+        koukusizai : 2,
+        status : 0,
+      },
+      {
+        id : '405',
+        name : '赤城改二2',
+        phonetic : 'あかぎかいに',
+        level: 90,
+        sekkeizu : 2,
+        catapult : 1,
+        sentoushouhou : 1,
+        kaihatsusizai : 100,
+        koukusizai : 2,
+        status : 0,
+      },
+      {
+        id : '406',
+        name : '赤城改二3',
+        phonetic : 'あかぎかいに',
+        level: 90,
+        sekkeizu : 2,
+        catapult : 1,
+        sentoushouhou : 1,
+        kaihatsusizai : 100,
+        koukusizai : 2,
+        status : 0,
+      },
+      {
+        id : '407',
+        name : '赤城改二4',
         phonetic : 'あかぎかいに',
         level: 90,
         sekkeizu : 2,

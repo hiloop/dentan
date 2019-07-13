@@ -1,10 +1,17 @@
 <template>
-    <div>
-        <div id="dheader">
-            <img id="logo" alt="dentan logo" src="../assets/logo.png" />
-            <slot></slot>
-            <div>{{ title }}</div>
-        </div>
+    <div id="lateral">
+    <v-toolbar dark :flat="true" color="blue-grey darken-4" :allow-overflow="true">
+      <v-toolbar-side-icon></v-toolbar-side-icon>
+      <v-toolbar-title>Page title</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>search</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon>more_vert</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-img :max-width="130" :src="require('../assets/logo.png')"></v-img>
     </div>
 </template>
 

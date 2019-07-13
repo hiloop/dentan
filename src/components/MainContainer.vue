@@ -1,15 +1,20 @@
 <template>
     <div class="main-container">
         <div>
-            <Tab :isActive="unExistTab" :selectStatus="unExists" @clicked="changeTab">未所属</Tab>
-            <Tab :isActive="unRemodeledTab" :selectStatus="unRemodeled" @clicked="changeTab">未改造</Tab>
-            <Tab :isActive="doneTab" :selectStatus="done" @clicked="changeTab">完了</Tab>
+            <v-tabs color="blue-grey darken-2" dark slider-color="orange" fixed-tabs>
+                <v-tab v-for="n in tabName.length" :key="n" ripple @change="changeTab(n-1)"> <b>{{tabName[n-1]}}</b></v-tab>
+                <v-tabs-items>
+                    <v-tab-item v-for="n in tabName.length" :key="n" lazy>
+                        <Workspace :selectStatus="n-1"/>
+                    </v-tab-item>
+                </v-tabs-items>
+            </v-tabs>
         </div>
-        <div>
+        <!-- <div>
             <Workspace v-if="selected === unExists" :selectStatus="unExists" key="unExists">Tab1</Workspace>
             <Workspace v-else-if="selected === unRemodeled" :selectStatus="unRemodeled" key="unRemodeled">Tab2</Workspace>
             <Workspace v-else :selectStatus="done" key="done">Tab3</Workspace>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -32,6 +37,7 @@ export default class MainContainer extends Vue {
     public unRemodeled!: number;
     public done!: number;
     public selected?: number;
+    private tabName: string[] = ['未所属', '未改造', '完了'];
 
     private created() {
         this.getStatus();
@@ -46,13 +52,16 @@ export default class MainContainer extends Vue {
     /**
      * changeTab
      */
-    private changeTab(selected: number) {
-        this.selected = selected;
-        if (selected === this.unExists) {
+    private changeTab(select: number) {
+        if (this.selected === select) {
+            return;
+        }
+        this.selected = select;
+        if (select === this.unExists) {
             this.unExistTab = true;
             this.unRemodeledTab = false;
             this.doneTab = false;
-        } else if (selected === this.unRemodeled) {
+        } else if (select === this.unRemodeled) {
             this.unExistTab = false;
             this.unRemodeledTab = true;
             this.doneTab = false;

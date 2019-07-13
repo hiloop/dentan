@@ -1,32 +1,27 @@
 <template>
-    <div class="card">
-        <div class="contents">
-            <div>{{ name }}</div>
-            <div>Lv. {{ level }}</div>
-        </div>
-        <CardLabel :leftText="'改装設計図'" :quantity="sekkeizu" :unit="'枚'"></CardLabel>
-        <CardLabel :leftText="'試製甲板カタパルト'" :quantity="catapult" :unit="'枚'"></CardLabel>
-        <CardLabel :leftText="'戦闘詳報'" :quantity="sentoushouhou" :unit="'枚'"></CardLabel>
-        <CardLabel :leftText="'新型航空兵装資材'" :quantity="koukusizai" :unit="'個'"></CardLabel>
-        <CardLabel :leftText="'開発資材'" :quantity="kaihatsusizai" :unit="'個'"></CardLabel>
-        <label>
-            <input :name="selectId" type="radio" value="0" v-model="status" v-on:change="changeStatus"/>
-            未所属
-        </label>
-        <label>
-            <input :name="selectId" type="radio" value="1" v-model="status" v-on:change="changeStatus"/>
-            未改造
-        </label>
-        <label>
-            <input :name="selectId" type="radio" value="2" v-model="status" v-on:change="changeStatus"/>
-            完了
-        </label>
-    </div>
+    <v-card color="blue-grey darken-2" class="white--text" tile min-width="250">
+        <v-card-title>{{ kanmusu.name }} Lv. {{ kanmusu.level }}</v-card-title>
+        <v-card-text>
+            <CardLabel :leftText="'改装設計図'" :quantity="kanmusu.sekkeizu" :unit="'枚'"></CardLabel>
+            <CardLabel :leftText="'試製甲板カタパルト'" :quantity="kanmusu.catapult" :unit="'枚'"></CardLabel>
+            <CardLabel :leftText="'戦闘詳報'" :quantity="kanmusu.sentoushouhou" :unit="'枚'"></CardLabel>
+            <CardLabel :leftText="'新型航空兵装資材'" :quantity="kanmusu.koukusizai" :unit="'個'"></CardLabel>
+            <CardLabel :leftText="'開発資材'" :quantity="kanmusu.kaihatsusizai" :unit="'個'"></CardLabel>
+        </v-card-text>
+        <v-card-actions>
+            <v-radio-group row v-model="kanmusu.status" :mandatory="false">
+                <v-radio label="未所属" :value="0" color="orange" dark v-on:change="changeStatus"></v-radio>
+                <v-radio label="未改造" :value="1" color="orange" dark v-on:change="changeStatus"></v-radio>
+                <v-radio label="完了" :value="2" color="orange" dark v-on:change="changeStatus"></v-radio>
+            </v-radio-group>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 import CardLabel from '@/components/CardLabel.vue';
+import Kanmusu from '@/store/kanmusu';
 
 @Component({
     components: {
@@ -35,50 +30,31 @@ import CardLabel from '@/components/CardLabel.vue';
 })
 export default class Card extends Vue {
     @Prop()
-    public selectId!: number;
+    public selectId!: string;
 
-    private id?: string;
-    private name?: string;
-    private level?: string;
-    private sekkeizu?: number;
-    private catapult?: number;
-    private sentoushouhou?: number;
-    private koukusizai?: number;
-    private kaihatsusizai?: number;
-    private status?: number;
+    private kanmusu!: Kanmusu;
+
     /**
      * 初期処理
      */
     private created() {
-        this.getKanmusu();
+        this.kanmusu = Kanmusu.getKanmusuById(this.selectId);
     }
-    private getKanmusu() {
-        const tmp = this.$store.getters.getKanmusuById(this.selectId)[0];
-        this.id = tmp.id;
-        this.name = tmp.name;
-        this.level = tmp.level;
-        this.sekkeizu = tmp.sekkeizu;
-        this.catapult = tmp.catapult;
-        this.sentoushouhou = tmp.sentoushouhou;
-        this.kaihatsusizai = tmp.kaihatsusizai;
-        this.koukusizai = tmp.koukusizai;
-        this.status = tmp.status;
-    }
-    private changeStatus() {
-        const args = { id: this.id, status: this.status };
-        this.$store.commit('changeStatus', args);
+
+    private changeStatus(value: number) {
+        this.kanmusu.saveStatus(value);
     }
 }
 </script>
 
-<style scoped lang="scss">
-.card {
-    margin: 1%;
-    background-color: #3e92a3;
-    height: 300px;
-    width: 220px;
-}
-.contents {
-    // margin-top: -10px;
-}
+<style lang="scss">
+  .v-label {
+      font-size: 13px;
+  }
+  .v-icon {
+      font-size: 20px
+  }
+  .v-input--selection-controls__input {
+      margin-right: 0;
+  }
 </style>
