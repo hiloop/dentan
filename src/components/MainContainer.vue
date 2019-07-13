@@ -1,15 +1,13 @@
 <template>
-    <div class="main-container">
-        <div>
-            <v-tabs color="blue-grey darken-2" dark slider-color="orange" fixed-tabs>
-                <v-tab v-for="n in tabName.length" :key="n" ripple @change="changeTab(n-1)"> <b>{{tabName[n-1]}}</b></v-tab>
-                <v-tabs-items>
-                    <v-tab-item v-for="n in tabName.length" :key="n" lazy>
-                        <Workspace :selectStatus="n-1" :key="n" :createdDateTime="pramDate"/>
-                    </v-tab-item>
-                </v-tabs-items>
-            </v-tabs>
-        </div>
+    <div>
+        <v-tabs color="blue-grey darken-2" dark slider-color="orange" fixed-tabs>
+            <v-tab v-for="n in tabName.length" :key="n" ripple @change="changeTab(n-1)"> <b>{{tabName[n-1]}}</b></v-tab>
+            <v-tabs-items>
+                <v-tab-item v-for="n in tabName.length" :key="n" lazy>
+                    <Workspace :selectStatus="n-1" :key="n" :createdDateTime="pramDate"/>
+                </v-tab-item>
+            </v-tabs-items>
+        </v-tabs>
     </div>
 </template>
 
