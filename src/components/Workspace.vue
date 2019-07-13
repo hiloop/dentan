@@ -1,17 +1,20 @@
 <template>
     <div class="main">
-        <v-container grid-list-xl fluid>
-            <v-layout justify-start row wrap>
-                <v-flex xs12 sm5 md3 v-for="(kanmusu, index) in allKanmusu" :key="index">
-                    <Card :selectId="kanmusu.id"></Card>
-                </v-flex>
-            </v-layout>
-        </v-container>
+        <div v-if="createdDateTime" key="0">
+            <v-container grid-list-xl fluid>
+                <v-layout justify-start row wrap>
+                    <v-flex xs12 sm5 md3 v-for="(kanmusu, index) in kanmusuArray" :key="index">
+                        <Card :selectId="kanmusu.id" :kanmusu="kanmusu"></Card>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </div>
     </div>
 </template>
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import Card from '@/components/Card.vue';
+import Kanmusu from '@/store/kanmusu';
 
 @Component({
     components: {
@@ -21,22 +24,17 @@ import Card from '@/components/Card.vue';
 export default class Workspace extends Vue {
     @Prop()
     private selectStatus!: number;
-
     @Prop()
-    private id!: string;
-
-    private allKanmusu?: object[];
-
-    @Watch('changeTab')
-    public close() {
-        // 自身を削除し、後始末する
-        const parent: any = this.$el.parentNode;
-        parent.removeChild(this.$el);
-        this.$destroy();
-    }
+    private createdDateTime?: Date;
+    private kanmusuArray?: Kanmusu[];
 
     private created() {
-        this.allKanmusu = this.$store.getters.getKanmusuByStatus(this.selectStatus);
+        this.getKanmusuArray();
+    }
+
+    @Watch('createdDateTime')
+    private getKanmusuArray() {
+        this.kanmusuArray = Kanmusu.getKanmusuListByStatus(this.selectStatus);
     }
 }
 </script>

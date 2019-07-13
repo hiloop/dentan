@@ -31,6 +31,26 @@ export default class Kanmusu implements IKanmusu {
         return kanmusu;
     }
 
+    public static getKanmusuListByStatus(status: number): Kanmusu[] {
+        const result = store.getters.getKanmusuByStatus(status);
+        const kanmusuArray: Kanmusu[] = [];
+        result.forEach((entity: any) => {
+            const kanmusu: Kanmusu = new Kanmusu();
+            kanmusu.id = entity.id;
+            kanmusu.name = entity.name;
+            kanmusu.phonetic = entity.phonetic;
+            kanmusu.level = entity.level;
+            kanmusu.sekkeizu = entity.sekkeizu;
+            kanmusu.catapult = entity.catapult;
+            kanmusu.sentoushouhou = entity.sentoushouhou;
+            kanmusu.kaihatsusizai = entity.kaihatsusizai;
+            kanmusu.koukusizai = entity.koukusizai;
+            kanmusu.status = entity.status;
+            kanmusuArray.push(kanmusu);
+        });
+        return kanmusuArray;
+    }
+
     public static initKanmusu() {
         const json = localStorage.getItem(Kanmusu.STORAGE_KEY);
         if (!json) {
@@ -54,7 +74,7 @@ export default class Kanmusu implements IKanmusu {
 
     public static saveAllKanmusuToLocalStorage() {
         const all = store.state.kanmusu;
-        const tmp = all.flatMap(value => ({id: value.id, status: value.status}));
+        const tmp = all.flatMap((value) => ({id: value.id, status: value.status}));
         localStorage.setItem(Kanmusu.STORAGE_KEY, JSON.stringify(tmp));
     }
 

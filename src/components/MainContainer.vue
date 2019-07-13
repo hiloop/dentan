@@ -5,7 +5,7 @@
                 <v-tab v-for="n in tabName.length" :key="n" ripple @change="changeTab(n-1)"> <b>{{tabName[n-1]}}</b></v-tab>
                 <v-tabs-items>
                     <v-tab-item v-for="n in tabName.length" :key="n" lazy>
-                        <Workspace :selectStatus="n-1"/>
+                        <Workspace :selectStatus="n-1" :key="n" :createdDateTime="pramDate"/>
                     </v-tab-item>
                 </v-tabs-items>
             </v-tabs>
@@ -36,6 +36,7 @@ export default class MainContainer extends Vue {
     public done!: number;
     public selected?: number;
     private tabName: string[] = ['未所属', '未改造', '完了'];
+    private pramDate: Date = new Date();
 
     private created() {
         this.getStatus();
@@ -55,6 +56,7 @@ export default class MainContainer extends Vue {
             return;
         }
         this.selected = select;
+        this.pramDate = new Date();
     }
 }
 </script>

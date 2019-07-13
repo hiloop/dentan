@@ -31,15 +31,8 @@ import Kanmusu from '@/store/kanmusu';
 export default class Card extends Vue {
     @Prop()
     public selectId!: string;
-
+    @Prop()
     private kanmusu!: Kanmusu;
-
-    /**
-     * 初期処理
-     */
-    private created() {
-        this.kanmusu = Kanmusu.getKanmusuById(this.selectId);
-    }
 
     private changeStatus(value: number) {
         this.kanmusu.saveStatus(value);
