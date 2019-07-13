@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-tabs color="blue-grey darken-2" dark slider-color="orange" fixed-tabs>
+        <v-tabs color="blue-grey darken-2" dark slider-color="orange" fixed-tabs v-model="initTab">
             <v-tab v-for="n in tabName.length" :key="n" ripple @change="changeTab(n-1)"> <b>{{tabName[n-1]}}</b></v-tab>
             <v-tabs-items>
                 <v-tab-item v-for="n in tabName.length" :key="n" lazy>
@@ -14,6 +14,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Workspace from '@/components/Workspace.vue';
+import Kanmusu from '@/store/kanmusu';
 
 @Component({
     components: {
@@ -24,6 +25,13 @@ export default class MainContainer extends Vue {
     public selected?: number;
     private tabName: string[] = ['未所属', '未改造', '完了'];
     private pramDate: Date = new Date();
+    private initTab: number = 0;
+
+    private created() {
+        if (Kanmusu.isExistUnRemodeled()) {
+            this.initTab = 1;
+        }
+    }
 
     /**
      * changeTab
