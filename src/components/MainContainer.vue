@@ -21,12 +21,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Workspace from '@/components/Workspace.vue';
-import Tab from '@/components/Tab.vue';
 
 @Component({
     components: {
         Workspace,
-        Tab,
     },
 })
 export default class MainContainer extends Vue {
@@ -57,19 +55,6 @@ export default class MainContainer extends Vue {
             return;
         }
         this.selected = select;
-        if (select === this.unExists) {
-            this.unExistTab = true;
-            this.unRemodeledTab = false;
-            this.doneTab = false;
-        } else if (select === this.unRemodeled) {
-            this.unExistTab = false;
-            this.unRemodeledTab = true;
-            this.doneTab = false;
-        } else {
-            this.unExistTab = false;
-            this.unRemodeledTab = false;
-            this.doneTab = true;
-        }
     }
 }
 </script>
