@@ -10,11 +10,6 @@
                 </v-tabs-items>
             </v-tabs>
         </div>
-        <!-- <div>
-            <Workspace v-if="selected === unExists" :selectStatus="unExists" key="unExists">Tab1</Workspace>
-            <Workspace v-else-if="selected === unRemodeled" :selectStatus="unRemodeled" key="unRemodeled">Tab2</Workspace>
-            <Workspace v-else :selectStatus="done" key="done">Tab3</Workspace>
-        </div> -->
     </div>
 </template>
 
@@ -28,26 +23,10 @@ import Workspace from '@/components/Workspace.vue';
     },
 })
 export default class MainContainer extends Vue {
-    public unExistTab: boolean = true;
-    public unRemodeledTab: boolean = false;
-    public doneTab: boolean = false;
-    public unExists!: number;
-    public unRemodeled!: number;
-    public done!: number;
     public selected?: number;
     private tabName: string[] = ['未所属', '未改造', '完了'];
     private pramDate: Date = new Date();
 
-    private created() {
-        this.getStatus();
-    }
-    private getStatus() {
-        const status = this.$store.state.status;
-        this.unExists = status.unExists;
-        this.unRemodeled = status.unRemodeled;
-        this.done = status.done;
-        this.selected = this.unExists;
-    }
     /**
      * changeTab
      */

@@ -1,17 +1,15 @@
 <template>
     <div id="lateral">
-    <v-toolbar dark :flat="true" color="blue-grey darken-4" :allow-overflow="true">
-      <v-toolbar-side-icon></v-toolbar-side-icon>
-      <v-toolbar-title>Page title</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>search</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>more_vert</v-icon>
-      </v-btn>
-    </v-toolbar>
-    <v-img :max-width="130" :src="require('../assets/logo.png')"></v-img>
+        <v-toolbar dark :flat="true" color="blue-grey darken-4"  :app="true">
+            <v-img :max-width="120" :src="require('../assets/logo.png')"></v-img>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+                <v-icon>search</v-icon>
+            </v-btn>
+            <v-btn icon>
+                <v-icon>more_vert</v-icon>
+            </v-btn>
+        </v-toolbar>
     </div>
 </template>
 

@@ -1,20 +1,7 @@
 <template>
     <div id="app">
     <v-app id="inspire">
-        <v-toolbar dark color="blue-grey darken-4" :app="true">
-        <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
-        <v-img :max-width="120" :src="require('../assets/logo.png')"></v-img>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-            <v-icon>search</v-icon>
-        </v-btn>
-        <v-btn icon>
-            <v-icon>apps</v-icon>
-        </v-btn>
-        <v-btn icon>
-            <v-icon>more_vert</v-icon>
-        </v-btn>
-        </v-toolbar>
+        <DentanHeader/>
         <v-content>
             <MainContainer></MainContainer>
         </v-content>
@@ -36,8 +23,6 @@ import MainContainer from '@/components/MainContainer.vue'; // @ is an alias to 
     },
 })
 export default class Top extends Vue {
-
-    private now: Date = new Date();
 
     private created() {
         Kanmusu.initKanmusu();
