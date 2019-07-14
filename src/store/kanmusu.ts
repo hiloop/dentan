@@ -4,12 +4,14 @@ export interface IKanmusu {
     id: string;
     name: string;
     phonetic: string;
+    shiptype: string;
     level: number;
     sekkeizu: number;
     catapult: number;
     sentoushouhou: number;
-    kaihatsusizai: number;
-    koukusizai: number;
+    koukushizai: number;
+    houkoushizai: number;
+    kaihatsushizai: number;
     status: number;
 }
 
@@ -21,12 +23,14 @@ export default class Kanmusu implements IKanmusu {
         kanmusu.id = tmp.id;
         kanmusu.name = tmp.name;
         kanmusu.phonetic = tmp.phonetic;
+        kanmusu.shiptype = tmp.shiptype;
         kanmusu.level = tmp.level;
         kanmusu.sekkeizu = tmp.sekkeizu;
         kanmusu.catapult = tmp.catapult;
         kanmusu.sentoushouhou = tmp.sentoushouhou;
-        kanmusu.kaihatsusizai = tmp.kaihatsusizai;
-        kanmusu.koukusizai = tmp.koukusizai;
+        kanmusu.koukushizai = tmp.koukushizai;
+        kanmusu.houkoushizai = tmp.houkoushizai;
+        kanmusu.kaihatsushizai = tmp.kaihatsushizai;
         kanmusu.status = tmp.status;
         return kanmusu;
     }
@@ -39,12 +43,14 @@ export default class Kanmusu implements IKanmusu {
             kanmusu.id = entity.id;
             kanmusu.name = entity.name;
             kanmusu.phonetic = entity.phonetic;
+            kanmusu.shiptype = entity.shiptype;
             kanmusu.level = entity.level;
             kanmusu.sekkeizu = entity.sekkeizu;
             kanmusu.catapult = entity.catapult;
             kanmusu.sentoushouhou = entity.sentoushouhou;
-            kanmusu.kaihatsusizai = entity.kaihatsusizai;
-            kanmusu.koukusizai = entity.koukusizai;
+            kanmusu.koukushizai = entity.koukushizai;
+            kanmusu.houkoushizai = entity.houkoushizai;
+            kanmusu.kaihatsushizai = entity.kaihatsushizai;
             kanmusu.status = entity.status;
             kanmusuArray.push(kanmusu);
         });
@@ -92,12 +98,14 @@ export default class Kanmusu implements IKanmusu {
     public id!: string;
     public name!: string;
     public phonetic!: string;
+    public shiptype!: string;
     public level!: number;
     public sekkeizu!: number;
     public catapult!: number;
     public sentoushouhou!: number;
-    public kaihatsusizai!: number;
-    public koukusizai!: number;
+    public koukushizai!: number;
+    public houkoushizai!: number;
+    public kaihatsushizai!: number;
     public status!: number;
 
     public storageFormat?: {
