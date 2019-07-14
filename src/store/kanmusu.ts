@@ -27,6 +27,8 @@ export interface IKanmusu {
     status: number;
 }
 
+type KanmusuKey = keyof IKanmusu;
+
 export default class Kanmusu implements IKanmusu {
 
     /**
@@ -76,11 +78,66 @@ export default class Kanmusu implements IKanmusu {
     /**
      * ステータスの中でソートする。
      * @param status ステータス
-     * @param key ソートする項目
+     * @param key ソートする項目（Kanmusuのフィールド名を指定）。デフォルトはid。
+     * @param isAsc true:昇順、false:降順。デフォルトはtrue。
      */
-    public static getKanmusuListByStatusOrder(status: number, key: string): Kanmusu[] {
+    public static getKanmusuListByStatusOrder(
+        status: number, key: KanmusuKey = 'id', isAsc: boolean = true): Kanmusu[] {
         const result = store.getters.getKanmusuByStatus(status);
-        const kanmusuArray: Kanmusu[] = [];
+        let kanmusuArray: Kanmusu[] = [];
+        result.forEach((entity: any) => {
+            const kanmusu: Kanmusu = this.convertStoreToKanmusu(entity);
+            kanmusuArray.push(kanmusu);
+        });
+        kanmusuArray = kanmusuArray.sort((a: Kanmusu, b: Kanmusu) => {
+            if (key === 'id') {
+                return (a.id > b.id && isAsc) ? 1 : -1;
+            } else if (key === 'name') {
+                return (a.name > b.name && isAsc) ? 1 : -1;
+            } else if (key === 'phonetic') {
+                if (isAsc) {
+                    return (a.phonetic > b.phonetic) ? 1 : -1;
+                }
+                return (a.phonetic < b.phonetic) ? 1 : -1;
+            } else if (key === 'level') {
+                if (isAsc) {
+                    return (a.level > b.level) ? 1 : -1;
+                }
+                return (a.level < b.level) ? 1 : -1;
+            } else if (key === 'sekkeizu') {
+                if (isAsc) {
+                    return (a.sekkeizu > b.sekkeizu) ? 1 : -1;
+                }
+                return (a.sekkeizu < b.sekkeizu) ? 1 : -1;
+            } else if (key === 'catapult') {
+                if (isAsc) {
+                    return (a.catapult > b.catapult) ? 1 : -1;
+                }
+                return (a.catapult < b.catapult) ? 1 : -1;
+            } else if (key === 'sentoushouhou') {
+                if (isAsc) {
+                    return (a.sentoushouhou > b.sentoushouhou) ? 1 : -1;
+                }
+                return (a.sentoushouhou < b.sentoushouhou) ? 1 : -1;
+            } else if (key === 'koukushizai') {
+                if (isAsc) {
+                    return (a.koukushizai > b.koukushizai) ? 1 : -1;
+                }
+                return (a.koukushizai < b.koukushizai) ? 1 : -1;
+            } else if (key === 'houkoushizai') {
+                if (isAsc) {
+                    return (a.houkoushizai > b.houkoushizai) ? 1 : -1;
+                }
+                return (a.houkoushizai < b.houkoushizai) ? 1 : -1;
+            } else if (key === 'kaihatsushizai') {
+                if (isAsc) {
+                    return (a.kaihatsushizai > b.kaihatsushizai) ? 1 : -1;
+                }
+                return (a.kaihatsushizai < b.kaihatsushizai) ? 1 : -1;
+            } else {
+                return 1;
+            }
+        });
         return kanmusuArray;
     }
 
