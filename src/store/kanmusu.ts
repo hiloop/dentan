@@ -63,19 +63,28 @@ export default class Kanmusu implements IKanmusu {
             Kanmusu.saveAllKanmusuToLocalStorage();
             return;
         }
-        const array = JSON.parse(json);
-        const all = store.state.kanmusu;
+        const inLocalStorage = JSON.parse(json);
+        const all = this.getAll();
+        const updatedStatus: any = inLocalStorage;
         // storeを更新
         for (const entity of all) {
-            for (const data of array) {
+            let isNew: boolean = false;
+            for (const data of inLocalStorage) {
                 if (data.id !== entity.id) {
+                    isNew = true;
                     continue;
                 }
+                isNew = false;
                 const args = { id: data.id, status: data.status };
                 store.commit('changeStatus', args);
                 break;
             }
+            if (isNew) {
+                const args = { id: entity.id, status: entity.status };
+                updatedStatus.push(args);
+            }
         }
+        localStorage.setItem(Kanmusu.STORAGE_KEY, JSON.stringify(updatedStatus));
     }
 
     public static isExistUnRemodeled(): boolean {
