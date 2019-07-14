@@ -1,62 +1,92 @@
 import store from '../store';
 
 export interface IKanmusu {
+    /** id */
     id: string;
+    /** 艦名 */
     name: string;
+    /** 読み方 */
     phonetic: string;
+    /** 艦種 */
     shiptype: string;
+    /** レベル */
     level: number;
+    /** 改装設計図 */
     sekkeizu: number;
+    /** 試製甲板カタパルト */
     catapult: number;
+    /** 戦闘詳報 */
     sentoushouhou: number;
+    /** 新型航空兵装資材 */
     koukushizai: number;
+    /** 新型砲熕兵装資材 */
     houkoushizai: number;
+    /** 開発資材 */
     kaihatsushizai: number;
+    /** ステータス */
     status: number;
 }
 
 export default class Kanmusu implements IKanmusu {
 
-    public static getKanmusuById(id: string): Kanmusu {
-        const tmp = store.getters.getKanmusuById(id)[0];
+    /**
+     * StoreのデータをKanmusuに変換
+     * @param storeData Storeから取得
+     */
+    public static convertStoreToKanmusu(storeData: any): Kanmusu {
         const kanmusu: Kanmusu = new Kanmusu();
-        kanmusu.id = tmp.id;
-        kanmusu.name = tmp.name;
-        kanmusu.phonetic = tmp.phonetic;
-        kanmusu.shiptype = tmp.shiptype;
-        kanmusu.level = tmp.level;
-        kanmusu.sekkeizu = tmp.sekkeizu;
-        kanmusu.catapult = tmp.catapult;
-        kanmusu.sentoushouhou = tmp.sentoushouhou;
-        kanmusu.koukushizai = tmp.koukushizai;
-        kanmusu.houkoushizai = tmp.houkoushizai;
-        kanmusu.kaihatsushizai = tmp.kaihatsushizai;
-        kanmusu.status = tmp.status;
+        kanmusu.id = storeData.id;
+        kanmusu.name = storeData.name;
+        kanmusu.phonetic = storeData.phonetic;
+        kanmusu.shiptype = storeData.shiptype;
+        kanmusu.level = storeData.level;
+        kanmusu.sekkeizu = storeData.sekkeizu;
+        kanmusu.catapult = storeData.catapult;
+        kanmusu.sentoushouhou = storeData.sentoushouhou;
+        kanmusu.koukushizai = storeData.koukushizai;
+        kanmusu.houkoushizai = storeData.houkoushizai;
+        kanmusu.kaihatsushizai = storeData.kaihatsushizai;
+        kanmusu.status = storeData.status;
         return kanmusu;
     }
 
+    /**
+     * IDから艦娘を取得
+     * @param id 艦娘のPK
+     */
+    public static getKanmusuById(id: string): Kanmusu {
+        const tmp = store.getters.getKanmusuById(id)[0];
+        return this.convertStoreToKanmusu(tmp);
+    }
+
+    /**
+     * ステータスから艦娘のリストを取得
+     * @param status ステータス
+     */
     public static getKanmusuListByStatus(status: number): Kanmusu[] {
         const result = store.getters.getKanmusuByStatus(status);
         const kanmusuArray: Kanmusu[] = [];
         result.forEach((entity: any) => {
-            const kanmusu: Kanmusu = new Kanmusu();
-            kanmusu.id = entity.id;
-            kanmusu.name = entity.name;
-            kanmusu.phonetic = entity.phonetic;
-            kanmusu.shiptype = entity.shiptype;
-            kanmusu.level = entity.level;
-            kanmusu.sekkeizu = entity.sekkeizu;
-            kanmusu.catapult = entity.catapult;
-            kanmusu.sentoushouhou = entity.sentoushouhou;
-            kanmusu.koukushizai = entity.koukushizai;
-            kanmusu.houkoushizai = entity.houkoushizai;
-            kanmusu.kaihatsushizai = entity.kaihatsushizai;
-            kanmusu.status = entity.status;
+            const kanmusu: Kanmusu = this.convertStoreToKanmusu(entity);
             kanmusuArray.push(kanmusu);
         });
         return kanmusuArray;
     }
 
+    /**
+     * ステータスの中でソートする。
+     * @param status ステータス
+     * @param key ソートする項目
+     */
+    public static getKanmusuListByStatusOrder(status: number, key: string): Kanmusu[] {
+        const result = store.getters.getKanmusuByStatus(status);
+        const kanmusuArray: Kanmusu[] = [];
+        return kanmusuArray;
+    }
+
+    /**
+     * 画面起動時の初期化。ステータスの取得、更新を行う。
+     */
     public static initKanmusu() {
         const json = localStorage.getItem(Kanmusu.STORAGE_KEY);
         if (!json) {
@@ -87,23 +117,33 @@ export default class Kanmusu implements IKanmusu {
         localStorage.setItem(Kanmusu.STORAGE_KEY, JSON.stringify(updatedStatus));
     }
 
+    /**
+     * 未改造艦がいるかチェック
+     */
     public static isExistUnRemodeled(): boolean {
-        const all = this.getAll();
-        return all.find((value: any) => (value.status === 1));
+        const all = this.getKanmusuListByStatus(1);
+        return all.length !== 0;
     }
 
     private static readonly STORAGE_KEY: string = 'Kanmusu';
 
+    /**
+     * 現状の艦娘データをlocalstorageに保存
+     */
     private static saveAllKanmusuToLocalStorage() {
         const all = this.getAll();
         const tmp = all.flatMap((value: any) => ({id: value.id, status: value.status}));
         localStorage.setItem(Kanmusu.STORAGE_KEY, JSON.stringify(tmp));
     }
 
+    /**
+     * 全件取得
+     */
     private static getAll(): any {
         return store.state.kanmusu;
     }
 
+    /* メンバー */
     public id!: string;
     public name!: string;
     public phonetic!: string;
@@ -122,10 +162,17 @@ export default class Kanmusu implements IKanmusu {
         status: string,
     };
 
+    /**
+     * 艦娘をjsonに変換
+     */
     public createStringForLocalStorage(): string {
         return JSON.stringify(this);
     }
 
+    /**
+     * ステータスを変更したら、storeとlocalstorageを更新
+     * @param changedStatus 変更されたステータス
+     */
     public saveStatus(changedStatus: number) {
         // storeを更新
         const args = { id: this.id, status: changedStatus };
