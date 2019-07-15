@@ -91,9 +91,15 @@ export default class Kanmusu implements IKanmusu {
         });
         kanmusuArray = kanmusuArray.sort((a: Kanmusu, b: Kanmusu) => {
             if (key === 'id') {
-                return (a.id > b.id && isAsc) ? 1 : -1;
+                if (isAsc) {
+                    return (a.id > b.id) ? 1 : -1;
+                }
+                return (a.id < b.id) ? 1 : -1;
             } else if (key === 'name') {
-                return (a.name > b.name && isAsc) ? 1 : -1;
+                if (isAsc) {
+                    return (a.name > b.name) ? 1 : -1;
+                }
+                return (a.name < b.name) ? 1 : -1;
             } else if (key === 'phonetic') {
                 if (isAsc) {
                     return (a.phonetic > b.phonetic) ? 1 : -1;
