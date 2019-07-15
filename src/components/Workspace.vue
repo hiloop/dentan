@@ -8,7 +8,14 @@
                     :items="kanmusuNameArray"
                     v-model="searchQuery"
                     v-on:change="searchKanmusuByName"
-                    label="find your girl"/>
+                    label="find your girls"/>
+                </v-flex>
+                <v-flex xs4 sm6 md2>
+                    <v-select
+                    :items="sortItems"
+                    v-model="selectSort"
+                    label="Sort"
+                    v-on:change="startSort"/>
                 </v-flex>
                 <v-flex xs4 sm6 md1>
                      <v-switch
@@ -17,13 +24,6 @@
                      :label="isAsc ? '昇順' : '降順'"
                      v-on:change="startSort"
                      hide-details/>
-                </v-flex>
-                <v-flex xs4 sm6 md2>
-                    <v-select
-                    :items="sortItems"
-                    v-model="selectSort"
-                    label="Sort"
-                    v-on:change="startSort"/>
                 </v-flex>
             </v-layout>
         </v-container>
