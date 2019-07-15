@@ -2,6 +2,14 @@
     <div class="main">
         <v-container grid-list-xl fluid>
             <v-layout align-start justify-center row wrap>
+                <v-flex xs4 sm6 md2>
+                    <v-combobox
+                    :filter="filter"
+                    :items="kanmusuNameArray"
+                    v-model="searchQuery"
+                    v-on:change="searchKanmusuByName"
+                    label="find your girl"/>
+                </v-flex>
                 <v-flex xs4 sm6 md1>
                      <v-switch
                      color="orange"
@@ -47,10 +55,13 @@ export default class Workspace extends Vue {
     private selectStatus!: number;
     @Prop()
     private createdDateTime?: Date;
-    private kanmusuArray?: Kanmusu[];
+    private initKanmusuArray?: Kanmusu[];
+    private kanmusuArray: Kanmusu[] = [];
     private sortItems: string[] = ['図鑑 No', '名前', 'Lv.'];
     private selectSort: string = '図鑑 No';
     private isAsc: boolean = true;
+    private kanmusuNameArray: string[] = [];
+    private searchQuery: string = '';
 
     private created() {
         this.getKanmusuArray();
@@ -58,7 +69,16 @@ export default class Workspace extends Vue {
 
     @Watch('createdDateTime')
     private getKanmusuArray() {
-        this.kanmusuArray = Kanmusu.getKanmusuListByStatus(this.selectStatus);
+        this.selectSort = '図鑑 No';
+        this.searchQuery = '';
+        this.initKanmusuArray = Kanmusu.getKanmusuListByStatus(this.selectStatus);
+        this.kanmusuArray = this.initKanmusuArray;
+        this.kanmusuNameArray = [];
+        this.kanmusuArray.forEach((value: Kanmusu) => {
+            // const item: string = value.createNameForSelector();
+            const item: string = value.name;
+            this.kanmusuNameArray.push(item);
+        });
     }
 
     private startSort() {
@@ -68,7 +88,37 @@ export default class Workspace extends Vue {
         } else if (this.selectSort === this.sortItems[2]) {
             sortKey = 'level';
         }
-        this.kanmusuArray = Kanmusu.getKanmusuListByStatusOrder(this.selectStatus, sortKey, this.isAsc);
+        this.kanmusuArray = Kanmusu.sortKanmusu(this.kanmusuArray, sortKey, this.isAsc);
+    }
+
+    private searchKanmusuByName() {
+        if (!this.initKanmusuArray) {
+            return;
+        }
+        if (!this.searchQuery) {
+            this.kanmusuArray = this.initKanmusuArray;
+            return;
+        }
+        this.kanmusuArray = [];
+        this.initKanmusuArray.forEach((value: Kanmusu) => {
+            if (value.matchName(this.searchQuery)) {
+                this.kanmusuArray.push(value);
+            }
+        });
+    }
+
+    private filter(item: object, queryText: string, itemText: string): boolean {
+        if (!this.initKanmusuArray) {
+            return false;
+        }
+        const result: Kanmusu | undefined = this.initKanmusuArray
+        .find((value: Kanmusu, index: number, array: Kanmusu[]) => {
+            return value.name === itemText;
+        });
+        if (!result) {
+            return false;
+        }
+        return result.matchName(queryText);
     }
 }
 </script>

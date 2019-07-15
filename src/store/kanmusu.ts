@@ -83,13 +83,62 @@ export default class Kanmusu implements IKanmusu {
      */
     public static getKanmusuListByStatusOrder(
         status: number, key: KanmusuKey = 'id', isAsc: boolean = true): Kanmusu[] {
-        const result = store.getters.getKanmusuByStatus(status);
-        let kanmusuArray: Kanmusu[] = [];
-        result.forEach((entity: any) => {
-            const kanmusu: Kanmusu = this.convertStoreToKanmusu(entity);
-            kanmusuArray.push(kanmusu);
-        });
-        kanmusuArray = kanmusuArray.sort((a: Kanmusu, b: Kanmusu) => {
+        return this.sortKanmusu(this.getKanmusuListByStatus(status), key, isAsc);
+    }
+
+    public static getKanmusuListByName(query: string): Kanmusu[] {
+        return [];
+    }
+
+    /**
+     * 画面起動時の初期化。ステータスの取得、更新を行う。
+     */
+    public static initKanmusu() {
+        const json = localStorage.getItem(Kanmusu.STORAGE_KEY);
+        if (!json) {
+            Kanmusu.saveAllKanmusuToLocalStorage();
+            return;
+        }
+        const inLocalStorage = JSON.parse(json);
+        const all = this.getAll();
+        const updatedStatus: any = inLocalStorage;
+        // storeを更新
+        for (const entity of all) {
+            let isNew: boolean = false;
+            for (const data of inLocalStorage) {
+                if (data.id !== entity.id) {
+                    isNew = true;
+                    continue;
+                }
+                isNew = false;
+                const args = { id: data.id, status: data.status };
+                store.commit('changeStatus', args);
+                break;
+            }
+            if (isNew) {
+                const args = { id: entity.id, status: entity.status };
+                updatedStatus.push(args);
+            }
+        }
+        localStorage.setItem(Kanmusu.STORAGE_KEY, JSON.stringify(updatedStatus));
+    }
+
+    /**
+     * 未改造艦がいるかチェック
+     */
+    public static isExistUnRemodeled(): boolean {
+        const all = this.getKanmusuListByStatus(1);
+        return all.length !== 0;
+    }
+
+    /**
+     * 艦娘の配列をソートする。
+     * @param array 艦娘の配列
+     * @param key ソートする項目
+     * @param isAsc true:昇順、false:降順。デフォルトはtrue。
+     */
+    public static sortKanmusu(array: Kanmusu[], key: KanmusuKey = 'id', isAsc: boolean = true): Kanmusu[] {
+        return array.sort((a: Kanmusu, b: Kanmusu) => {
             if (key === 'id') {
                 if (isAsc) {
                     return (a.id > b.id) ? 1 : -1;
@@ -144,48 +193,6 @@ export default class Kanmusu implements IKanmusu {
                 return 1;
             }
         });
-        return kanmusuArray;
-    }
-
-    /**
-     * 画面起動時の初期化。ステータスの取得、更新を行う。
-     */
-    public static initKanmusu() {
-        const json = localStorage.getItem(Kanmusu.STORAGE_KEY);
-        if (!json) {
-            Kanmusu.saveAllKanmusuToLocalStorage();
-            return;
-        }
-        const inLocalStorage = JSON.parse(json);
-        const all = this.getAll();
-        const updatedStatus: any = inLocalStorage;
-        // storeを更新
-        for (const entity of all) {
-            let isNew: boolean = false;
-            for (const data of inLocalStorage) {
-                if (data.id !== entity.id) {
-                    isNew = true;
-                    continue;
-                }
-                isNew = false;
-                const args = { id: data.id, status: data.status };
-                store.commit('changeStatus', args);
-                break;
-            }
-            if (isNew) {
-                const args = { id: entity.id, status: entity.status };
-                updatedStatus.push(args);
-            }
-        }
-        localStorage.setItem(Kanmusu.STORAGE_KEY, JSON.stringify(updatedStatus));
-    }
-
-    /**
-     * 未改造艦がいるかチェック
-     */
-    public static isExistUnRemodeled(): boolean {
-        const all = this.getKanmusuListByStatus(1);
-        return all.length !== 0;
     }
 
     private static readonly STORAGE_KEY: string = 'Kanmusu';
@@ -253,5 +260,12 @@ export default class Kanmusu implements IKanmusu {
             data.status = changedStatus;
         }
         localStorage.setItem(Kanmusu.STORAGE_KEY, JSON.stringify(array));
+    }
+
+    /**
+     * コンボボックス用の表示名を作成
+     */
+    public matchName(target: string): boolean {
+        return this.name.includes(target) || this.phonetic.includes(target);
     }
 }
