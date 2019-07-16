@@ -71,6 +71,7 @@ export default class Workspace extends Vue {
     private getKanmusuArray() {
         this.selectSort = '図鑑 No';
         this.searchQuery = '';
+        this.isAsc = true;
         this.initKanmusuArray = Kanmusu.getKanmusuListByStatus(this.selectStatus);
         this.kanmusuArray = this.initKanmusuArray;
         this.kanmusuNameArray = [];

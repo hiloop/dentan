@@ -1,6 +1,6 @@
 <template>
     <v-card color="blue-grey darken-2" class="white--text" tile min-width="250">
-        <v-card-title>{{ kanmusu.name }} Lv. {{ kanmusu.level }}</v-card-title>
+        <v-card-title><b>{{ kanmusu.name }}</b> Lv. {{ kanmusu.level }}</v-card-title>
         <v-card-text>
             <CardLabel :leftText="'改装設計図'" :quantity="kanmusu.sekkeizu" :unit="'枚'"></CardLabel>
             <CardLabel :leftText="'試製甲板カタパルト'" :quantity="kanmusu.catapult" :unit="'枚'"></CardLabel>
