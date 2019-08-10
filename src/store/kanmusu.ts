@@ -72,7 +72,7 @@ export default class Kanmusu implements IKanmusu {
             const kanmusu: Kanmusu = this.convertStoreToKanmusu(entity);
             kanmusuArray.push(kanmusu);
         });
-        return kanmusuArray;
+        return this.sortKanmusu(kanmusuArray);
     }
 
     /**
