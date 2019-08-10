@@ -14,9 +14,10 @@
                     <v-select
                     :items="sortItems"
                     v-model="selectSort"
-                    label="Sort"
+                    label="sort"
                     v-on:change="startSort"/>
                 </v-flex>
+                <!--
                 <v-flex xs4 sm6 md1>
                      <v-switch
                      color="orange"
@@ -25,13 +26,21 @@
                      v-on:change="startSort"
                      hide-details/>
                 </v-flex>
+                -->
+                <v-flex xs4 sm6 md1>
+                    <v-checkbox
+                    color="orange darken-2"
+                    v-model="isChecked"
+                    :label="checkBoxLabel"
+                    v-on:change="openAndClose"/>
+                </v-flex>
             </v-layout>
         </v-container>
         <div v-if="createdDateTime" key="0">
             <v-container grid-list-xl fluid>
                 <v-layout justify-start row wrap>
                     <v-flex xs12 sm5 md3 v-for="(kanmusu, index) in kanmusuArray" :key="index">
-                        <Card :selectId="kanmusu.id" :kanmusu="kanmusu"></Card>
+                        <Card :selectId="kanmusu.id" :kanmusu="kanmusu" :isExpand="isExpand"></Card>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -62,6 +71,9 @@ export default class Workspace extends Vue {
     private isAsc: boolean = true;
     private kanmusuNameArray: string[] = [];
     private searchQuery: string = '';
+    private isChecked: boolean = false;
+    private checkBoxLabel: string = 'full open';
+    private isExpand: number = 1;
 
     private created() {
         this.getKanmusuArray();
@@ -90,6 +102,16 @@ export default class Workspace extends Vue {
             sortKey = 'level';
         }
         this.kanmusuArray = Kanmusu.sortKanmusu(this.kanmusuArray, sortKey, this.isAsc);
+    }
+
+    private openAndClose() {
+        if (this.isChecked) {
+            this.checkBoxLabel = 'full close';
+            this.isExpand = 0;
+        } else {
+            this.checkBoxLabel = 'full open';
+            this.isExpand = 1;
+        }
     }
 
     private searchKanmusuByName() {

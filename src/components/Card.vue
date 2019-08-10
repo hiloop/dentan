@@ -1,6 +1,10 @@
 <template>
+<v-expansion-panel :value="isExpand">
+    <v-expansion-panel-content>
+    <template v-slot:header>
+        <div><b>{{ kanmusu.name }}</b> Lv. {{ kanmusu.level }}</div>
+    </template>
     <v-card color="blue-grey darken-2" class="white--text" tile min-width="250">
-        <v-card-title><b>{{ kanmusu.name }}</b> Lv. {{ kanmusu.level }}</v-card-title>
         <v-card-text>
             <CardLabel :leftText="'改装設計図'" :quantity="kanmusu.sekkeizu" :unit="'枚'"></CardLabel>
             <CardLabel :leftText="'試製甲板カタパルト'" :quantity="kanmusu.catapult" :unit="'枚'"></CardLabel>
@@ -17,6 +21,8 @@
             </v-radio-group>
         </v-card-actions>
     </v-card>
+    </v-expansion-panel-content>
+</v-expansion-panel>
 </template>
 
 <script lang="ts">
@@ -34,6 +40,8 @@ export default class Card extends Vue {
     public selectId!: string;
     @Prop()
     private kanmusu!: Kanmusu;
+    @Prop()
+    private isExpand?: number;
 
     private changeStatus(value: number) {
         this.kanmusu.saveStatus(value);
@@ -50,5 +58,9 @@ export default class Card extends Vue {
   }
   .v-input--selection-controls__input {
       margin-right: 0;
+  }
+  .v-expansion-panel__header {
+      color: #dddddd;
+      background-color: #455A64;
   }
 </style>
