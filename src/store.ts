@@ -644,9 +644,9 @@ export default new Vuex.Store({
         status : 0,
       },
       {
-        id : '216',
-        name : '古鷹改二',
-        phonetic : 'ふるたかかいに',
+        id : '217',
+        name : '加古改二',
+        phonetic : 'かこかいに',
         shiptype : 'CA',
         level : 65,
         sekkeizu : 0,
